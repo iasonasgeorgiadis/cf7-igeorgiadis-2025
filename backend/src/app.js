@@ -11,6 +11,8 @@ const { errorHandler, notFound } = require('./middlewares/errorHandler');
 // Import routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const courseRoutes = require('./routes/courses');
+const enrollmentRoutes = require('./routes/enrollments');
 
 /**
  * Create Express application
@@ -61,6 +63,8 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', generalLimiter, userRoutes);
+app.use('/api/courses', generalLimiter, courseRoutes);
+app.use('/api/enrollments', generalLimiter, enrollmentRoutes);
 
 // Error handling
 app.use(notFound);

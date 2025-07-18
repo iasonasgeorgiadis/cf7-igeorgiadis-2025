@@ -24,7 +24,22 @@ module.exports = {
   },
   
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      // Allow any localhost port in development
+      if (process.env.NODE_ENV === 'development' && origin.startsWith('http://localhost:')) {
+        return callback(null, true);
+      }
+      
+      // In production, use the configured CLIENT_URL
+      if (origin === process.env.CLIENT_URL) {
+        return callback(null, true);
+      }
+      
+      callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
   },
   

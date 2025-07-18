@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 /**
@@ -42,21 +43,24 @@ const AdminDashboard = () => {
         <div className="mt-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">System Management</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button className="text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+            <button disabled className="text-left px-4 py-3 bg-gray-50 rounded-lg opacity-50 cursor-not-allowed">
               <div className="font-medium">User Management</div>
               <div className="text-sm text-gray-600">Create, edit, and manage users</div>
+              <div className="text-xs text-gray-500 mt-1">(Coming in Phase 5)</div>
             </button>
-            <button className="text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+            <Link to="/courses" className="block text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
               <div className="font-medium">Course Overview</div>
               <div className="text-sm text-gray-600">Monitor all courses and enrollments</div>
-            </button>
-            <button className="text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+            </Link>
+            <button disabled className="text-left px-4 py-3 bg-gray-50 rounded-lg opacity-50 cursor-not-allowed">
               <div className="font-medium">System Statistics</div>
               <div className="text-sm text-gray-600">View detailed analytics</div>
+              <div className="text-xs text-gray-500 mt-1">(Coming in Phase 5)</div>
             </button>
-            <button className="text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+            <button disabled className="text-left px-4 py-3 bg-gray-50 rounded-lg opacity-50 cursor-not-allowed">
               <div className="font-medium">Reports</div>
               <div className="text-sm text-gray-600">Generate system reports</div>
+              <div className="text-xs text-gray-500 mt-1">(Coming in Phase 5)</div>
             </button>
           </div>
         </div>

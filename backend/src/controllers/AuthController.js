@@ -34,11 +34,15 @@ class AuthController {
    */
   async login(req, res, next) {
     try {
-      const { email, password } = req.body;
-      const { user, tokens } = await authService.login(email, password);
+      const { email, password, rememberMe = false } = req.body;
+      const { user, tokens } = await authService.login(email, password, rememberMe);
 
-      // Set refresh token in httpOnly cookie
-      res.cookie('refreshToken', tokens.refreshToken, config.cookie);
+      // Set refresh token in httpOnly cookie with extended expiration if rememberMe
+      const cookieOptions = {
+        ...config.cookie,
+        maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : config.cookie.maxAge
+      };
+      res.cookie('refreshToken', tokens.refreshToken, cookieOptions);
 
       res.json({
         success: true,

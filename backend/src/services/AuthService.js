@@ -35,7 +35,7 @@ class AuthService {
     });
 
     // Generate tokens
-    const tokens = await this.generateTokens(user);
+    const tokens = await this.generateTokens(user, false);
 
     // Save refresh token
     await userRepository.updateRefreshToken(user.id, tokens.refreshToken);
@@ -47,9 +47,10 @@ class AuthService {
    * Login user
    * @param {string} email - User email
    * @param {string} password - User password
+   * @param {boolean} rememberMe - Whether to extend token expiration
    * @returns {Promise<{user: User, tokens: Object}>} User and tokens
    */
-  async login(email, password) {
+  async login(email, password, rememberMe = false) {
     // Find user
     const user = await userRepository.findByEmail(email);
     if (!user) {
@@ -63,7 +64,7 @@ class AuthService {
     }
 
     // Generate tokens
-    const tokens = await this.generateTokens(user);
+    const tokens = await this.generateTokens(user, rememberMe);
 
     // Save refresh token
     await userRepository.updateRefreshToken(user.id, tokens.refreshToken);
@@ -97,7 +98,7 @@ class AuthService {
       }
 
       // Generate new tokens
-      const tokens = await this.generateTokens(user);
+      const tokens = await this.generateTokens(user, false);
 
       // Save new refresh token
       await userRepository.updateRefreshToken(user.id, tokens.refreshToken);
@@ -158,9 +159,10 @@ class AuthService {
   /**
    * Generate JWT tokens
    * @param {User} user - User instance
+   * @param {boolean} rememberMe - Whether to extend token expiration
    * @returns {Promise<{accessToken: string, refreshToken: string}>} JWT tokens
    */
-  async generateTokens(user) {
+  async generateTokens(user, rememberMe = false) {
     const payload = {
       userId: user.id,
       email: user.email,
@@ -172,7 +174,7 @@ class AuthService {
     });
 
     const refreshToken = jwt.sign(payload, config.jwt.refreshSecret, {
-      expiresIn: config.jwt.refreshExpiresIn
+      expiresIn: rememberMe ? '30d' : config.jwt.refreshExpiresIn
     });
 
     return { accessToken, refreshToken };

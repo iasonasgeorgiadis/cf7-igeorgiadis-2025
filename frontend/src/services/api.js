@@ -30,30 +30,19 @@ api.interceptors.request.use(
 );
 
 /**
- * Response interceptor to handle token refresh
+ * Response interceptor to handle errors
  */
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        const response = await api.post('/auth/refresh');
-        const { accessToken } = response.data.data;
-        localStorage.setItem('accessToken', accessToken);
-        
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        return api(originalRequest);
-      } catch (refreshError) {
-        localStorage.removeItem('accessToken');
+  (error) => {
+    // Only redirect to login on 401 if we're not already on the login page
+    if (error.response?.status === 401 && !window.location.pathname.includes('/login')) {
+      localStorage.removeItem('accessToken');
+      // Don't redirect if we're already trying to login
+      if (error.config.url !== '/auth/login') {
         window.location.href = '/login';
-        return Promise.reject(refreshError);
       }
     }
-
     return Promise.reject(error);
   }
 );

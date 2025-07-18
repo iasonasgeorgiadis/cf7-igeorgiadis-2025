@@ -38,14 +38,18 @@ export const AuthProvider = ({ children }) => {
   /**
    * Login user
    */
-  const login = async (email, password) => {
+  const login = async (email, password, rememberMe = false) => {
     try {
       setError(null);
-      const { user } = await authService.login(email, password);
+      console.log('AuthContext: Attempting login...');
+      const { user } = await authService.login(email, password, rememberMe);
+      console.log('AuthContext: Login successful, user:', user);
       setUser(user);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      console.error('AuthContext: Login error:', error);
+      console.error('Error response:', error.response);
+      const message = error.response?.data?.message || error.message || 'Login failed';
       setError(message);
       return { success: false, error: message };
     }

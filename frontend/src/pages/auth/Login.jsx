@@ -26,11 +26,16 @@ const Login = () => {
     setIsLoading(true);
     setError('');
 
-    const result = await login(data.email, data.password);
+    console.log('Login attempt:', { email: data.email, rememberMe: data.rememberMe });
+    console.log('API URL:', import.meta.env.VITE_API_URL);
+    
+    const result = await login(data.email, data.password, data.rememberMe);
 
     if (result.success) {
+      console.log('Login successful, navigating to dashboard');
       navigate('/dashboard');
     } else {
+      console.error('Login failed:', result.error);
       setError(result.error);
       setIsLoading(false);
     }
@@ -104,6 +109,16 @@ const Login = () => {
           </div>
 
           <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                {...register('rememberMe')}
+                type="checkbox"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+                Remember me
+              </label>
+            </div>
             <Link
               to="/forgot-password"
               className="text-sm text-blue-600 hover:text-blue-500"
