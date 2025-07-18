@@ -9,14 +9,22 @@
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:setup": "node tests/utils/createTestDb.js",
     "migrate": "node src/db/migrate.js",
     "seed": "node src/db/seed.js",
     "lint": "eslint src/"
   },
-  "keywords": ["lms", "education", "nodejs", "express", "postgresql"],
+  "keywords": [
+    "lms",
+    "education",
+    "nodejs",
+    "express",
+    "postgresql"
+  ],
   "author": "Ioannis Georgiadis",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
@@ -28,7 +36,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

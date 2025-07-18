@@ -11,6 +11,12 @@ import CourseDetail from './pages/courses/CourseDetail';
 import CreateCourse from './pages/courses/CreateCourse';
 import CourseEdit from './pages/courses/CourseEdit';
 import MyCourses from './pages/courses/MyCourses';
+import CreateLesson from './pages/lessons/CreateLesson';
+import EditLesson from './pages/lessons/EditLesson';
+import LessonView from './pages/lessons/LessonView';
+import CreateAssignment from './pages/assignments/CreateAssignment';
+import AssignmentDetail from './pages/assignments/AssignmentDetail';
+import GradeSubmissions from './pages/assignments/GradeSubmissions';
 
 function App() {
   return (
@@ -66,6 +72,54 @@ function App() {
               element={
                 <PrivateRoute>
                   <MyCourses />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/courses/:courseId/lessons/create"
+              element={
+                <PrivateRoute allowedRoles={['instructor']}>
+                  <CreateLesson />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/lessons/:id/edit"
+              element={
+                <PrivateRoute allowedRoles={['instructor']}>
+                  <EditLesson />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/lessons/:id"
+              element={
+                <PrivateRoute>
+                  <LessonView />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/lessons/:lessonId/assignments/create"
+              element={
+                <PrivateRoute allowedRoles={['instructor']}>
+                  <CreateAssignment />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/assignments/:id"
+              element={
+                <PrivateRoute>
+                  <AssignmentDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/assignments/:id/submissions"
+              element={
+                <PrivateRoute allowedRoles={['instructor']}>
+                  <GradeSubmissions />
                 </PrivateRoute>
               }
             />

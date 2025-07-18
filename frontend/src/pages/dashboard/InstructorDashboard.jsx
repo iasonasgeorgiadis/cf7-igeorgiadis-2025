@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import courseService from '../../services/courseService';
+import submissionService from '../../services/submissionService';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 /**
  * Instructor dashboard component
@@ -13,18 +15,28 @@ const InstructorDashboard = () => {
     studentCount: 0,
     pendingGrading: 0
   });
+  const [pendingSubmissions, setPendingSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadStats = async () => {
       try {
+        // Load courses
         const data = await courseService.getInstructorCourses();
+        
+        // Load pending submissions
+        const submissions = await submissionService.getPendingSubmissions();
+        setPendingSubmissions(submissions.slice(0, 5)); // Show top 5
+        
         setStats({
           courseCount: data.courses?.length || 0,
           studentCount: data.courses?.reduce((sum, course) => sum + (course.enrolled_count || 0), 0) || 0,
-          pendingGrading: 0 // Will be implemented in Phase 4
+          pendingGrading: submissions.length
         });
       } catch (error) {
         console.error('Error loading stats:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -58,6 +70,43 @@ const InstructorDashboard = () => {
           </div>
         </div>
 
+        {/* Pending Submissions */}
+        {loading ? (
+          <div className="mt-8 flex justify-center">
+            <LoadingSpinner />
+          </div>
+        ) : pendingSubmissions.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Pending Submissions to Grade</h2>
+            <div className="space-y-3">
+              {pendingSubmissions.map((submission) => (
+                <Link
+                  key={submission.id}
+                  to={`/assignments/${submission.assignment_id}/submissions`}
+                  className="block p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-medium text-gray-900">{submission.assignment?.title}</h3>
+                      <p className="text-sm text-gray-600">
+                        {submission.student?.full_name} • {submission.course?.title}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-gray-900">
+                        Submitted {new Date(submission.submitted_at).toLocaleDateString()}
+                      </p>
+                      {new Date(submission.submitted_at) > new Date(submission.assignment?.due_date) && (
+                        <p className="text-sm text-red-600">Late submission</p>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mt-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="space-y-3">
@@ -66,29 +115,13 @@ const InstructorDashboard = () => {
               className="block w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <span className="font-medium">Create New Course</span>
-              <span className="text-sm text-gray-600 ml-2">(Available)</span>
             </Link>
             <Link 
               to="/my-courses" 
               className="block w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <span className="font-medium">Manage My Courses</span>
-              <span className="text-sm text-gray-600 ml-2">(Available)</span>
             </Link>
-            <button 
-              disabled 
-              className="w-full text-left px-4 py-3 bg-gray-50 rounded-lg opacity-50 cursor-not-allowed"
-            >
-              <span className="font-medium">Grade Assignments</span>
-              <span className="text-sm text-gray-500 ml-2">(Coming in Phase 4)</span>
-            </button>
-            <button 
-              disabled 
-              className="w-full text-left px-4 py-3 bg-gray-50 rounded-lg opacity-50 cursor-not-allowed"
-            >
-              <span className="font-medium">View Student Progress</span>
-              <span className="text-sm text-gray-500 ml-2">(Coming in Phase 4)</span>
-            </button>
           </div>
         </div>
       </div>

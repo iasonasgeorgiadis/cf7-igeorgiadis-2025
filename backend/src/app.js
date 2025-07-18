@@ -13,6 +13,9 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const courseRoutes = require('./routes/courses');
 const enrollmentRoutes = require('./routes/enrollments');
+const lessonRoutes = require('./routes/lessons');
+const assignmentRoutes = require('./routes/assignments');
+const submissionRoutes = require('./routes/submissions');
 
 /**
  * Create Express application
@@ -65,6 +68,9 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', generalLimiter, userRoutes);
 app.use('/api/courses', generalLimiter, courseRoutes);
 app.use('/api/enrollments', generalLimiter, enrollmentRoutes);
+app.use('/api', generalLimiter, lessonRoutes); // Lesson routes use mixed paths
+app.use('/api', generalLimiter, assignmentRoutes); // Assignment routes use mixed paths
+app.use('/api', generalLimiter, submissionRoutes); // Submission routes use mixed paths
 
 // Error handling
 app.use(notFound);

@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import courseService from '../../services/courseService';
 import enrollmentService from '../../services/enrollmentService';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import LessonList from '../../components/lessons/LessonList';
 
 /**
  * Course detail page component
@@ -252,6 +253,11 @@ const CourseDetail = () => {
               </Link>
             </div>
           )}
+        </div>
+
+        {/* Lessons section */}
+        <div className="p-6 border-t border-gray-200">
+          <LessonList courseId={course.id} isOwner={isOwner} />
         </div>
       </div>
     </div>
