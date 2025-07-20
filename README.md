@@ -221,9 +221,6 @@ This project covers all the requirements for the Coding Factory 7 final assignme
 - Full API documentation with Swagger
 - Clear build and deployment instructions
 
-## License
-MIT License - Academic Project
-
 ---
 **Author**: Iasonas Georgiadis  
 **Program**: Coding Factory 7 - Athens University of Economics and Business
