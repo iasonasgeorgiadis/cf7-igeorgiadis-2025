@@ -6,7 +6,6 @@ I built this LMS as my final project for Coding Factory 7 at Athens University o
 
 **University**: Athens University of Economics and Business  
 **Program**: Coding Factory 7 - Center for Training and Lifelong Learning  
-**Due Date**: January 19, 2025  
 **Author**: Iasonas Georgiadis
 
 ## What It Does
