@@ -217,18 +217,6 @@ kill -9 <PID>  # Stop it
 **Too many login attempts?**
 The app has rate limiting - wait 15 minutes or restart the backend.
 
-## Assignment Requirements
-
-This project covers all the requirements for the Coding Factory 7 final assignment:
-
-- Complete domain model with users, courses, enrollments, lessons, assignments, and submissions
-- PostgreSQL database with proper relationships
-- Organized code with separate layers for controllers, services, and data access
-- Authentication system with role-based access
-- React frontend with protected routes
-- Test setup for both backend and frontend
-- Clear build and deployment instructions
-
 ---
 **Author**: Iasonas Georgiadis  
 **Program**: Coding Factory 7 - Athens University of Economics and Business
